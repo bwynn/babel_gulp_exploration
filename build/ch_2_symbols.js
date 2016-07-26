@@ -37,7 +37,7 @@ console.log(me === you);*/
 // =============================================================================
 
 // symbol registry
-/*function extractValues(str) {
+function extractValues(str) {
     var key = Symbol.for("extractValues.parse"),
         re = extractValues[key] || /[^=&]+?=([^&]+?)(?=&|$)/g,
         values = [],
@@ -48,29 +48,4 @@ console.log(me === you);*/
     }
 
     return values;
-}*/
-
-// EXAMPLE 3
-// =============================================================================
-/*var s = Symbol.for("something cool");
-
-var desc = Symbol.keyFor(s);
-console.log(desc);
-
-// get the symbol from the registry again
-var s2 = Symbol.for(desc);
-
-console.log(s2 === s); // true*/
-
-// EXAMPLE 4
-// =============================================================================
-// symbols as object properties
-var o = {
-    foo: 42,
-    [Symbol("bar")]: "hello world",
-    baz: true
-};
-
-console.log(Object.getOwnPropertyNames(o)); // ['foo', 'baz']
-
-console.log(Object.getOwnPropertySymbols(o)); // [Symbol(bar)]
+}
