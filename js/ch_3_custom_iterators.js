@@ -28,7 +28,7 @@ for (var v of Fib) {
 
 // EXAMPLE 2
 // =============================================================================
-var tasks = {
+/*var tasks = {
     [Symbol.iterator]() {
         var steps = this.actions.slice();
 
@@ -79,4 +79,57 @@ it.next(20, 50); // step 2: 20 50
 it.next(20, 50, 120); // step 3: 20 50 120
                       // {value: 1120, done: false}
 
-it.next(); // {done: true}
+it.next(); // {done: true}*/
+
+// EXAMPLE 3
+// =============================================================================
+if (!Number.prototype[Symbol.iterator]) {
+    Object.defineProperty(
+        Number.prototype,
+        Symbol.iterator,
+        {
+            writable: true,
+            configurable: true,
+            enumerable: false,
+            value: function iterator() {
+                var i, inc, done = false, top = +this;
+
+                // iterate positively or negatively?
+                inc = 1 * (top < 0 ? -1 : 1);
+
+                return {
+                    // make iterator itself an iterable
+                    [Symbol.iterator]() {return this;},
+                    next() {
+                        if (!done) {
+                            // initial iteration always 0
+                            if (i == null) {
+                                i = 0;
+                            }
+                            // iterating positively
+                            else if (top >= 0) {
+                                i = Math.min(top, i + inc);
+                            }
+                            // iterating negatively
+                            else {
+                                i = Math.max(top, i + inc);
+                            }
+
+                            // done after this iteration ?
+                            if (i == top) done = true;
+
+                            return {value: i, done: false};
+                        }
+                        else {
+                            return {done: true};
+                        }
+                    }
+                };
+            }
+        }
+    );
+}
+
+for (var i of [...-3]) {
+    console.log(i);
+}
